@@ -1,0 +1,30 @@
+<!doctype html>
+<head>
+<title>noyuno.dip.jp</title>
+</head>
+<body>
+    <h1>noyuno.dip.jp</h1>
+    <p>
+        <a href="https://github.com/noyuno/dotfiles">dotfiles</a>
+        <a href="https://cloud.docker.com/app/noyuno/repository/docker/noyuno/dotfiles">(docker)</a><br>
+        <a href="https://bitbucket.org/noyuno/eng">eng</a><br>
+        <a href="https://bitbucket.org/noyuno/paint">paint</a><br>
+        <a href="https://bitbucket.org/noyuno/eng/src/master/schedule/link.md?at=master&fileviewer=file-view-default">link</a><br>
+        <hr>
+        <a href="https://github.com/noyuno/">GitHub</a><br>
+        <a href="https://bitbucket.org/noyuno/">Bitbucket</a><br>
+        <a href="https://twitter.com/suchimika">Twitter</a><br>
+        <hr>
+        <div id="yourip">,</div>
+    </p>
+<script>
+var request=new XMLHttpRequest();
+request.open("GET", "http://ipinfo.io/ip", true);
+request.send();
+request.onreadystatechange = function () {
+    if (this.readyState == 4)
+        document.getElementById("yourip").textContent = "Your IP address: " + request.responseText;
+};
+</script>
+</body>
+
