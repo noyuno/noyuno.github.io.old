@@ -38,11 +38,16 @@
         myy = 0;
         myx = 0;
         myd = 6;
+        mycol = 0;
         collision = false;
         score = 0;
         var array = [];
 
         leftkey = rightkey = upkey = downkey = false;
+
+        var go = function(i) {
+            location.href = document.getElementById(i).href;
+        };
 
         var arrowkey = function(f, e) {
             switch (e.keyCode) {
@@ -57,6 +62,27 @@
                     break;
                 case 40: //down
                     downkey = f;
+                    break;
+                case 68: // d
+                    go("dotfiles");
+                    break;
+                case 69: // e
+                    go("eng");
+                    break;
+                case 80: // p
+                    go("paint");
+                    break;
+                case 76: // l
+                    go("link");
+                    break;
+                case 83: // s
+                    start();
+                    break;
+                case 71: // g
+                    go("github");
+                    break;
+                case 66: // b
+                    go("bitbucket");
                     break;
             }
         }
@@ -80,15 +106,15 @@
             var w = cs.width;
             var h = cs.height;
             var x = 0;
-            var maxcircle = 60;
-            var mincircle = 4;
+            var maxcircle = 120;
+            var mincircle = 6;
             var count = 0;
 
             function box(x, yv, ya, r) {
                 this.x = x;
                 this.yv = yv;
                 this.ya = ya;
-                this.y = 0;
+                this.y = -maxcircle;
                 this.r = r;
                 this.rm = false;
             }
@@ -124,15 +150,17 @@
                     if (gamestart) {
                         dr = Math.sqrt(Math.pow(myx - array[i].x, 2) +
                             Math.pow(myy - array[i].y, 2));
-                        if (dr < array[i].r) {
+                        if (dr <= array[i].r + mycol) {
                             collision = true;
                         }
                     }
-                    ctx.lineWidth = array[i].r*2;
-                    ctx.globalAlpha = -(0.4-0.02)/(maxcircle-mincircle)*array[i].r+0.4+0.02;
+                    ctx.lineWidth = 1;//array[i].r*2;
+                    ctx.globalAlpha = 
+                        -(0.4-0.05)/(maxcircle-mincircle)*array[i].r+0.4+0.05;
                     ctx.beginPath();
                     ctx.arc(array[i].x, array[i].y, array[i].r, 0, Math.PI*2, true);
                     ctx.stroke();
+                    ctx.fill();
                 }
 
                 for (i = 0; count % 100 == 0 && i < array.length; i++) {
@@ -157,9 +185,9 @@
                 if (gamestart) {
                     ctx.globalAlpha = 0.8;
                     ctx.beginPath();
-                    ctx.moveTo(myx, myy);
-                    ctx.lineTo(myx - 10, myy + 20);
-                    ctx.lineTo(myx + 10, myy + 20);
+                    ctx.moveTo(myx, myy - 10);
+                    ctx.lineTo(myx - 10, myy + 10);
+                    ctx.lineTo(myx + 10, myy + 10);
                     ctx.closePath();
                     ctx.fill();
                 }
@@ -173,17 +201,17 @@
     <div id="content">
     <h1>noyuno.github.io</h1>
     <p>
-        <a href="https://github.com/noyuno/dotfiles">dotfiles</a>
+        <a id="dotfiles" href="https://github.com/noyuno/dotfiles">dotfiles</a>
         <a href="https://cloud.docker.com/app/noyuno/repository/docker/noyuno/dotfiles">(Docker)</a><br>
-        <a href="https://bitbucket.org/noyuno/eng">eng</a><br>
-        <a href="https://bitbucket.org/noyuno/paint">paint</a><br>
-        <a href="https://bitbucket.org/noyuno/eng/src/master/schedule/link.md?at=master&fileviewer=file-view-default">link</a><br>
-        <a href = "#" onclick="start();">start</a><br> 
+        <a id="eng" href="https://bitbucket.org/noyuno/eng">eng</a><br>
+        <a id="paint" href="https://bitbucket.org/noyuno/paint">paint</a><br>
+        <a id="link" href="https://bitbucket.org/noyuno/eng/src/master/schedule/link.md?at=master&fileviewer=file-view-default">link</a><br>
+        <a id="start" href = "#" onclick="start();">start</a><br> 
     </p>
         <hr>
     <p>
-        <a href="https://github.com/noyuno/">GitHub</a><br>
-        <a href="https://bitbucket.org/noyuno/">Bitbucket</a><br>
+        <a id="github" href="https://github.com/noyuno/">GitHub</a><br>
+        <a id="bitbucket" href="https://bitbucket.org/noyuno/">Bitbucket</a><br>
         <div id="score"></div>
     </p>
     </div>
