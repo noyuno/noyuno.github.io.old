@@ -1,7 +1,7 @@
 <!doctype html>
 <head>
     <title>noyuno.github.io</title>
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Inconsolata" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inconsolata" />
     <style>
         * { font-family:"Inconsolata", monospace; font-size:20px; color: lightgray}
         body { background-color: #222}
@@ -24,6 +24,60 @@
         #content { position: absolute; margin: 30px; top: 0; left: 0}
     </style>
     <script>
+        canvaswidth = 2000;
+        canvasheight = 2000;
+        gamestart = false;
+        var start = function() {
+            gamestart = true;
+            score = 0;
+            collision = false;
+            array.splice(0, array.length);
+            myy = window.innerHeight * 4 / 5;
+            myx = window.innerWidth / 2;
+        };
+        myy = 0;
+        myx = 0;
+        myd = 6;
+        collision = false;
+        score = 0;
+        var array = [];
+
+        leftkey = rightkey = upkey = downkey = false;
+
+        document.onkeydown = function (e) {
+            switch (e.keyCode) {
+                case 39: // right
+                    rightkey = true;
+                    break;
+                case 37: // left
+                    leftkey = true;
+                    break;
+                case 38: //up
+                    upkey = true;
+                    break;
+                case 40:
+                    downkey = true;
+                    break;
+            }
+        };
+
+        document.onkeyup = function (e) {
+            switch (e.keyCode) {
+                case 39: // right
+                    rightkey = false;
+                    break;
+                case 37: // left
+                    leftkey = false;
+                    break;
+                case 38: //up
+                    upkey = false;
+                    break;
+                case 40:
+                    downkey = false;
+                    break;
+            }
+        };
+
         window.onload = function () {
             var cs  = document.getElementById('canvas');
             cs.width = 2000;
@@ -34,11 +88,8 @@
             ctx.lineWidth = 10;
             var w = cs.width;
             var h = cs.height;
-            console.log(w);
-            console.log(h);
             var x = 0;
 
-            var array = [];
             function box(x, yv, ya, r) {
                 this.x = x;
                 this.yv = yv;
@@ -52,24 +103,62 @@
                     this.y += this.yv;
                 }
             };
+
             setInterval(function () {
                 ctx.clearRect(0, 0, w, h);
                 ctx.globalAlpha = 0.3;
-                if (Math.random()>0.98) {
+                ctx.strokeStyle = "lightgray";
+                ctx.fillStyle = "lightgray";
+                if (Math.random()>0.99 || (gamestart && Math.random()>0.0)) {
                     array.push(new box(
-                        Math.random()*w,
+                        Math.random()*window.innerWidth,
                         Math.random()*1,
                         Math.random()*0.05, 
                         Math.max(Math.random()*20, 4)));
+                    if (gamestart && collision  == false)
+                        document.getElementById("score").innerText = ++score;
                 }
-                array.forEach(function (n) {
-                    n.next();
-                    ctx.lineWidth = n.r*2;
-                    ctx.globalAlpha = -(0.4-0.05)/(20-4)*n.r+0.5;
+                for(i = 0; i < array.length; i++) {
+                    array[i].next();
+                    if (array[i].y > window.innerHeight) {
+                        array.splice(i, 1);
+                        continue;
+                    }
+                    if (gamestart) {
+                        dr = Math.sqrt(Math.pow(myx - array[i].x, 2) + Math.pow(myy - array[i].y, 2));
+                        if (dr < array[i].r) {
+                            collision = true;
+                        }
+                    }
+                    ctx.lineWidth = array[i].r*2;
+                    ctx.globalAlpha = -(0.4-0.05)/(20-4)*array[i].r+0.5;
                     ctx.beginPath();
-                    ctx.arc(n.x, n.y, n.r, 0, Math.PI*2, true);
+                    ctx.arc(array[i].x, array[i].y, array[i].r, 0, Math.PI*2, true);
                     ctx.stroke();
-                });
+                }
+
+                // my
+                if (rightkey) myx = Math.min(window.innerWidth, myx + myd);
+                if (leftkey)  myx = Math.max(0, myx - myd);
+                if (upkey)    myy = Math.max(0, myy - myd);
+                if (downkey)  myy = Math.min(window.innerHeight, myy + myd);
+
+                if (collision) {
+                    ctx.strokeStyle = "darkorange";
+                    ctx.fillStyle = "darkorange";
+                } else {
+                    ctx.strokeStyle = "lightgray";
+                    ctx.fillStyle = "lightgray";
+                }
+                if (gamestart) {
+                    ctx.globalAlpha = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(myx, myy);
+                    ctx.lineTo(myx - 10, myy + 20);
+                    ctx.lineTo(myx + 10, myy + 20);
+                    ctx.closePath();
+                    ctx.fill();
+                }
             }, 1000/30);
         };
     </script>
@@ -84,11 +173,13 @@
         <a href="https://bitbucket.org/noyuno/eng">eng</a><br>
         <a href="https://bitbucket.org/noyuno/paint">paint</a><br>
         <a href="https://bitbucket.org/noyuno/eng/src/master/schedule/link.md?at=master&fileviewer=file-view-default">link</a><br>
+        <a href = "#" onclick="start();">start</a><br> 
     </p>
         <hr>
     <p>
         <a href="https://github.com/noyuno/">GitHub</a><br>
         <a href="https://bitbucket.org/noyuno/">Bitbucket</a><br>
+        <div id="score"></div>
     </p>
     </div>
 </body>
