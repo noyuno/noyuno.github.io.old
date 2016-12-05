@@ -44,38 +44,29 @@
 
         leftkey = rightkey = upkey = downkey = false;
 
-        document.onkeydown = function (e) {
+        var arrowkey = function(f, e) {
             switch (e.keyCode) {
                 case 39: // right
-                    rightkey = true;
+                    rightkey = f;
                     break;
                 case 37: // left
-                    leftkey = true;
+                    leftkey = f;
                     break;
                 case 38: //up
-                    upkey = true;
+                    upkey = f;
                     break;
-                case 40:
-                    downkey = true;
+                case 40: //down
+                    downkey = f;
                     break;
             }
+        }
+
+        document.onkeydown = function (e) {
+            arrowkey(true, e);
         };
 
         document.onkeyup = function (e) {
-            switch (e.keyCode) {
-                case 39: // right
-                    rightkey = false;
-                    break;
-                case 37: // left
-                    leftkey = false;
-                    break;
-                case 38: //up
-                    upkey = false;
-                    break;
-                case 40:
-                    downkey = false;
-                    break;
-            }
+            arrowkey(false, e);
         };
 
         window.onload = function () {
@@ -89,6 +80,9 @@
             var w = cs.width;
             var h = cs.height;
             var x = 0;
+            var maxcircle = 60;
+            var mincircle = 4;
+            var count = 0;
 
             function box(x, yv, ya, r) {
                 this.x = x;
@@ -96,6 +90,7 @@
                 this.ya = ya;
                 this.y = 0;
                 this.r = r;
+                this.rm = false;
             }
             box.prototype = {
                 next: function() {
@@ -109,32 +104,41 @@
                 ctx.globalAlpha = 0.3;
                 ctx.strokeStyle = "lightgray";
                 ctx.fillStyle = "lightgray";
-                if (Math.random()>0.99 || (gamestart && Math.random()>0.0)) {
+                r = Math.random();
+                if (r<window.innerWidth/300000 || 
+                    (gamestart && r<window.innerWidth/5000)) {
                     array.push(new box(
                         Math.random()*window.innerWidth,
                         Math.random()*1,
                         Math.random()*0.05, 
-                        Math.max(Math.random()*20, 4)));
+                        Math.max(Math.random()*maxcircle, mincircle)));
                     if (gamestart && collision  == false)
                         document.getElementById("score").innerText = ++score;
                 }
                 for(i = 0; i < array.length; i++) {
                     array[i].next();
-                    if (array[i].y > window.innerHeight) {
-                        array.splice(i, 1);
+                    if (array[i].y > window.innerHeight + maxcircle) {
+                        array[i].rm = true;
                         continue;
                     }
                     if (gamestart) {
-                        dr = Math.sqrt(Math.pow(myx - array[i].x, 2) + Math.pow(myy - array[i].y, 2));
+                        dr = Math.sqrt(Math.pow(myx - array[i].x, 2) +
+                            Math.pow(myy - array[i].y, 2));
                         if (dr < array[i].r) {
                             collision = true;
                         }
                     }
                     ctx.lineWidth = array[i].r*2;
-                    ctx.globalAlpha = -(0.4-0.05)/(20-4)*array[i].r+0.5;
+                    ctx.globalAlpha = -(0.4-0.02)/(maxcircle-mincircle)*array[i].r+0.4+0.02;
                     ctx.beginPath();
                     ctx.arc(array[i].x, array[i].y, array[i].r, 0, Math.PI*2, true);
                     ctx.stroke();
+                }
+
+                for (i = 0; count % 100 == 0 && i < array.length; i++) {
+                    if (array[i].rm == true) {
+                        array.splice(i, 1);
+                    }
                 }
 
                 // my
@@ -159,6 +163,7 @@
                     ctx.closePath();
                     ctx.fill();
                 }
+                count++;
             }, 1000/30);
         };
     </script>
