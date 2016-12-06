@@ -37,19 +37,20 @@
         };
         myy = 0;
         myx = 0;
-        myd = 6;
+        myd = 10;
         mycol = 0;
         collision = false;
         score = 0;
         var array = [];
 
-        leftkey = rightkey = upkey = downkey = false;
+        leftkey = rightkey = upkey = downkey = shiftkey = false;
 
         var go = function(i) {
             location.href = document.getElementById(i).href;
         };
 
         var arrowkey = function(f, e) {
+            shiftkey = e.shiftKey;
             switch (e.keyCode) {
                 case 39: // right
                     rightkey = f;
@@ -170,11 +171,12 @@
                 }
 
                 // my
-                if (rightkey) myx = Math.min(window.innerWidth, myx + myd);
-                if (leftkey)  myx = Math.max(0, myx - myd);
-                if (upkey)    myy = Math.max(0, myy - myd);
-                if (downkey)  myy = Math.min(window.innerHeight, myy + myd);
-
+                t = shiftkey ? myd / 3 : myd;
+                if (rightkey) myx = Math.min(window.innerWidth, myx + t);
+                if (leftkey)  myx = Math.max(0, myx - t);
+                if (upkey)    myy = Math.max(0, myy - t);
+                if (downkey)  myy = Math.min(window.innerHeight, myy + t);
+                
                 if (collision) {
                     ctx.strokeStyle = "darkorange";
                     ctx.fillStyle = "darkorange";
