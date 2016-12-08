@@ -51,41 +51,35 @@
         };
 
         var arrowkey = function(f, e) {
+            var linkar = [["dotfiles"], ["eng"], ["paint"], ["link"], 
+                ["github"], ["bitbucket"], ["calc.vim"], ["unite-latex-symbols"]];
             shiftkey = e.shiftKey;
             switch (e.keyCode) {
                 case 39: // right
                     rightkey = f;
-                    break;
+                    return;
                 case 37: // left
                     leftkey = f;
-                    break;
+                    return;
                 case 38: //up
                     upkey = f;
-                    break;
+                    return;
                 case 40: //down
                     downkey = f;
-                    break;
-                case 68: // d
-                    go("dotfiles");
-                    break;
-                case 69: // e
-                    go("eng");
-                    break;
-                case 80: // p
-                    go("paint");
-                    break;
-                case 76: // l
-                    go("link");
-                    break;
-                case 83: // s
+                    return;
+            }
+            if (f == true) {
+                var c = String.fromCharCode(e.keyCode).toLowerCase();
+                if (c == 's') {
                     start();
-                    break;
-                case 71: // g
-                    go("github");
-                    break;
-                case 66: // b
-                    go("bitbucket");
-                    break;
+                } else {
+                    for (i in linkar) {
+                        if (linkar[i][linkar[i].length == 1 ? 0 : 1].charAt(0) == c) {
+                            go(linkar[i][0]);
+                            break;
+                        } 
+                    }
+                }
             }
         }
 
