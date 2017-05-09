@@ -26,12 +26,6 @@ var slim = function (s, n) {
 
 var print = function (keyword) {
     $.getJSON("https://noyuno.github.io/data/anime", function (data) {
-        var table = $('<table id="anime-list" />');
-        $("<tr style='font-weight: bold; text-align: center' />")
-            .append($("<td/>").text("開始"))
-            .append($("<td/>").text("チャネル"))
-            .append($("<td/>").text("タイトル"))
-            .append($("<td/>").text("サブタイトル")).appendTo(table);
 
         $.each(data, function(k, v) {
             $.each(v, function (kk, vv) {
@@ -53,22 +47,23 @@ var print = function (keyword) {
                 var startdt = new Date(vv["StTime"] * 1000);
                 var enddt = new Date(vv["EdTime"] * 1000);
                 var nowdt = new Date();
-                var startstyle = "<td />";
+                var startstyle = "";
                 var startmessage = "";
+                var startmessage2 = "";
 
                 if (vv["Warn"] == 1) {
-                    startstyle = "<td style='color: #CC6666'/>";
+                    startstyle = "#CC6666";
                 }
 
                 if (enddt - nowdt < 0) {
                     return
                 } else if (startdt > nowdt && 
                     startdt - nowdt.setMinutes(nowdt.getMinutes()-2) < 0) {
-                    startstyle = "<td style='color: #B294BB' />";
-                    startmessage = "SOON"
+                    startstyle = "#B294BB";
+                    startmessage = "まもなく"
                 } else if (nowdt - startdt > 0) {
-                    startstyle = "<td style='color: #F0C674' />";
-                    startmessage = "ONAIR"
+                    startstyle = "#F0C674";
+                    startmessage2 = "が放送中"
                 }
                 if (startmessage == "") {
                     var start = zerofill(startdt.getMonth() + 1) + "/" +
@@ -81,49 +76,16 @@ var print = function (keyword) {
                         zerofill(startdt.getMinutes());
                 }
 
-                $('<tr/>')
-                    .append($(startstyle).text(start))
-                    .append($("<td />").text(vv["ChName"]))
-                    .append($("<td/>")
-                        .append("<a href='http://cal.syoboi.jp/tid/" + 
-                        vv["TID"] + "#" + vv["PID"] + "'" + 
-                        "style='color: #81A2BE'>" +
-                        slim(vv["Title"], 32) + "</a>"))
-                    .append($("<td />").text(vv["SubTitle"]))
-                    .appendTo(table);
+                $("#anime-banner").css("color", startstyle).text(
+                    start + " から " + vv["ChName"] + " で「" + 
+                    slim(vv["Title"], 32) + "」" + startmessage2);
+                return false;
             });
         });
-        $(table).appendTo("#anime");
     });
 };
 
 $.get('https://noyuno.github.io/data/anime-keyword', function (keyword) {
     print($.grep(keyword.split(/\n/), function (e) { return e !== ""; }));
 });
-
-function search() {
-    // Declare variables 
-    var input, filter, table, tr, td, i;
-    input = $("#search");
-    filter = input.val().toLowerCase();
-    table = $("#anime-list");
-    tr = $("#anime-list tr");
-    var c = 0;
-
-    for (i = 1; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2];
-        if (td) {
-            if (td.textContent.toLowerCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-                c++;
-            } else {
-                tr[i].style.display = "none";
-            }
-        } 
-    }
-}
-
-window.onload = function () {
-    $("#search").focus();
-};
 

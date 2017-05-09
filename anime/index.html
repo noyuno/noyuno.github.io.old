@@ -4,7 +4,12 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inconsolata" />
     <meta name="viewport" content="width=device-width">
     <style>
-        * { font-family:"Inconsolata", "Noto Sans CJK JP DemiLight", monospace; font-size:17px; color: lightgray; line-height: 1.2em; }
+        * { 
+            font-family:"Inconsolata", "Noto Sans CJK JP DemiLight", "Noto Sans CJK JP Regular", monospace;
+            font-size:17px;
+            color: lightgray;
+            line-height: 1.2em
+        }
         body, input { background-color: #222}
         table { white-space: nowrap; table-layout: auto }
         td { padding-right: 0.5em }
@@ -34,12 +39,14 @@
 </head>
 <body>
     <div class="wrapper"><canvas id="canvas"></canvas></div>
-    <div id="content">
-    <b><a href="/" id="root">noyuno.github.io</a> / anime</b> 
-        <input type="text" id="search" placeholder="フィルタ" onkeyup="search();"></input><br>
-    <hr>
-    <div class="section" id="anime">
-    </div>
+        <div id="content">
+        <b><a href="/" id="root">noyuno.github.io</a> / anime</b> 
+            <input type="text" id="search" placeholder="フィルタ" onkeyup="search();"></input><br>
+        <hr>
+        <div class="section" id="anime"></div>
+        <div class="footer" role="contentinfo">
+            Powered by しょぼいカレンダー
+        </div>
     </div>
 
 </body>
