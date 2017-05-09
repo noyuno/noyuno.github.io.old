@@ -12,12 +12,13 @@
         a:link, a:visited { color:lightgray }
         a:active, a:hover, a:focus { color: white }
         h1 { font-weight: bold }
-        hr { height: 0; margin: 0; padding: 0; border: 0; border-top: 1px dashed #bbb;  }
+        hr { height: 0; margin: 0; padding: 0;  border: 0; margin-top: 10px; border-top: 1px dashed #bbb;  }
+
         hr:after {
             content: '✂';
             display: inline-block;
             position: relative;
-            top: -12px;
+            top: -10px;
             left: 40px;
             padding: 0 3px;
             font-size: 18px;
@@ -34,10 +35,10 @@
 <body>
     <div class="wrapper"><canvas id="canvas"></canvas></div>
     <div id="content">
-    <h1><a href="/" id="root">noyuno.github.io</a> / anime</h1>
-        <hr>
+    <b><a href="/" id="root">noyuno.github.io</a> / anime</b> 
+        <input type="text" id="search" placeholder="フィルタ" onkeyup="search();"></input><br>
+    <hr>
     <div class="section" id="anime">
-        <input type="text" id="search" onkeyup="search();"></input>
     </div>
     </div>
 

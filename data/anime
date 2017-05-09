@@ -1,33 +1,6 @@
 {
   "items": [
     {
-      "StTime": "1494347400",
-      "EdTime": "1494349200",
-      "LastUpdate": "1490538415",
-      "Count": "6",
-      "StOffset": "0",
-      "TID": "4529",
-      "PID": "404509",
-      "ProgComment": "",
-      "ChID": "128",
-      "SubTitle": "かいぶつかします／今夜も最高",
-      "Flag": "0",
-      "Deleted": "0",
-      "Warn": "0",
-      "Revision": "0",
-      "AllDay": "0",
-      "UPSFlag": null,
-      "UserID": null,
-      "ConfFlag": null,
-      "Title": "笑ゥせぇるすまんNEW",
-      "ShortTitle": "",
-      "Cat": "1",
-      "Urls": "http://warau-new.jp/\t公式\nhttp://ch.nicovideo.jp/warau-new\tニコニコチャンネル",
-      "ChName": "BS11デジタル",
-      "ChURL": "http://www.bs11.jp/program/today.php",
-      "ChGID": "2"
-    },
-    {
       "StTime": "1494347700",
       "EdTime": "1494349500",
       "LastUpdate": "1489172501",
