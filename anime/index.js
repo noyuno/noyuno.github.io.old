@@ -81,6 +81,21 @@ var print = function (keyword) {
                         zerofill(startdt.getMinutes());
                 }
 
+                var subtitle = "";
+                if (vv["Count"] == null) {
+                    if (vv["SubTitle"] == null) {
+                        subtitle = "";
+                    } else {
+                        subtitle = vv["SubTitle"];
+                    }
+                } else {
+                    if (vv["SubTitle"] == null) {
+                        subtitle = "#" + vv["Count"];
+                    } else {
+                        subtitle = "#" + vv["Count"] + " " + vv["SubTitle"];
+                    }
+                }
+
                 $('<tr/>')
                     .append($(startstyle).text(start))
                     .append($("<td />").text(vv["ChName"]))
@@ -89,7 +104,7 @@ var print = function (keyword) {
                         vv["TID"] + "#" + vv["PID"] + "'" + 
                         "style='color: #81A2BE'>" +
                         slim(vv["Title"], 32) + "</a>"))
-                    .append($("<td />").text(vv["SubTitle"]))
+                    .append($("<td />").text(subtitle))
                     .appendTo(table);
             });
         });
