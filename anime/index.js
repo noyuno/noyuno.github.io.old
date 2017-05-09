@@ -24,7 +24,7 @@ var slim = function (s, n) {
 };
 
 
-print = function (keyword) {
+var print = function (keyword) {
     $.getJSON("https://noyuno.github.io/data/anime", function (data) {
         var table = $('<table id="anime-list" />');
         $("<tr style='font-weight: bold; text-align: center' />")
