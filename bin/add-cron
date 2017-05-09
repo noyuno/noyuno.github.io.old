@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+ex="$HOME/noyuno.github.io/bin/anime-refresh"
+crontab -l | grep $ex &&:
+if [ $? -ne 0 ]; then
+    echo "adding anime-refresh to crontab"
+    (crontab -l; echo "0 20 * * * $ex") | crontab -
+fi
+

@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+log=$HOME/noyuno.github.io/log/$(now)
+mkdir -p $(dirname $log)
+(
+set -x
+
+src='http://cal.syoboi.jp/rss2.php?usr=shiro51&filter=0&count=1000&days=14&titlefmt=%24(StTime)%01%24(Mark)%24(MarkW)%01%24(ShortTitle)%01%24(SubTitleB)%01%24(ChName)&alt=json'
+srcword='https://raw.githubusercontent.com/noyuno/dotfiles/master/list/anime-keyword'
+dest=$HOME/noyuno.github.io/data/anime
+destword=$HOME/noyuno.github.io/data/anime-keyword
+
+mkdir -p $(dirname $dest)
+curl -sL $src | jq . -M >$dest
+curl -sL $srcword >$destword
+git add $dest $destword
+git commit -m 'crontab: Update anime list'
+git push
+) 1>$log 2>&1
+
