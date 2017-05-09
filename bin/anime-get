@@ -13,5 +13,6 @@ destword=$HOME/noyuno.github.io/data/anime-keyword
 mkdir -p $(dirname $dest)
 curl -sL $src | jq . -M >$dest
 curl -sL $srcword >$destword
+git add $dest $destword
 ) 1>$log 2>&1
 
