@@ -1,33 +1,6 @@
 {
   "items": [
     {
-      "StTime": "1494353100",
-      "EdTime": "1494354900",
-      "LastUpdate": "1490459536",
-      "Count": "5",
-      "StOffset": "0",
-      "TID": "4517",
-      "PID": "403954",
-      "ProgComment": "",
-      "ChID": "59",
-      "SubTitle": "縛られしもの",
-      "Flag": "0",
-      "Deleted": "0",
-      "Warn": "0",
-      "Revision": "0",
-      "AllDay": "0",
-      "UPSFlag": null,
-      "UserID": null,
-      "ConfFlag": null,
-      "Title": "夏目友人帳 陸",
-      "ShortTitle": "",
-      "Cat": "1",
-      "Urls": "http://www.natsume-anime.jp/\t公式\nhttp://www.tv-tokyo.co.jp/anime/natsume6/\tテレビ東京\nhttp://ch.nicovideo.jp/natsume6\tニコニコチャンネル",
-      "ChName": "テレビ愛知",
-      "ChURL": "http://www.tv-aichi.co.jp/epg/week0.html",
-      "ChGID": "13"
-    },
-    {
       "StTime": "1494403200",
       "EdTime": "1494404940",
       "LastUpdate": "1490408410",

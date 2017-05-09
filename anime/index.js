@@ -102,24 +102,34 @@ $.get('https://noyuno.github.io/data/anime-keyword', function (keyword) {
 });
 
 function search() {
-    // Declare variables 
-    var input, filter, table, tr, td, i;
-    input = $("#search");
-    filter = input.val().toLowerCase();
-    table = $("#anime-list");
-    tr = $("#anime-list tr");
+    var input = $("#search");
+    var filter = input.val().toLowerCase();
+    var table = $("#anime-list");
+    var tr = $("#anime-list tr");
     var c = 0;
 
-    for (i = 1; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2];
-        if (td) {
-            if (td.textContent.toLowerCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-                c++;
-            } else {
-                tr[i].style.display = "none";
-            }
-        } 
+    for (var i = 1; i < tr.length; i++) {
+        var matched = false;
+        for (var col = 1; col < 4; col++) {
+            var td = tr[i].getElementsByTagName("td")[col];
+            if (td) {
+                if (td.textContent.toLowerCase().indexOf(filter) > -1) {
+                    matched = true;
+                    break;
+                }
+            } 
+        }
+        if (matched) {
+            tr[i].style.display = "";
+            c++;
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+    if (c == 0) {
+        $("#search-not-found").css("display", "");
+    } else {
+        $("#search-not-found").css("display", "none");
     }
 }
 
