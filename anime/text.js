@@ -61,12 +61,13 @@ var print = function (keyword) {
                     startdt - nowdt.setMinutes(nowdt.getMinutes()-2) < 0) {
                     startstyle = "#B294BB";
                     startmessage = "まもなく"
+                    startmessage2 = "が放送開始"
                 } else if (nowdt - startdt > 0) {
                     startstyle = "#F0C674";
                     startmessage2 = "が放送中"
                 }
                 if (startmessage == "") {
-                    var start = zerofill(startdt.getMonth() + 1) + "/" +
+                    var start = "次の番組は" + zerofill(startdt.getMonth() + 1) + "/" +
                         zerofill(startdt.getDate()) + " " +
                         zerofill(startdt.getHours()) + ":" +
                         zerofill(startdt.getMinutes());

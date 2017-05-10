@@ -23,103 +23,102 @@ var slim = function (s, n) {
     return s.substr(0, i);
 };
 
-var keywordold = "";
+var keyword = [];
+var data;
 
-var print = function (keyword) {
-    if (keyword == undefined) {
-        keyword = keywordold;
-    } else {
-        keywordold = keyword;
-    }
-    $.getJSON("https://noyuno.github.io/data/anime", function (data) {
-        var table = $('<table id="anime-list" />');
-        $("<tr style='font-weight: bold; text-align: center' />")
-            .append($("<td/>").text("開始"))
-            .append($("<td/>").text("チャネル"))
-            .append($("<td/>").text("タイトル"))
-            .append($("<td/>").text("サブタイトル")).appendTo(table);
+var print = function () {
+    var table = $('<table id="anime-list" />');
+    $("<tr style='font-weight: bold; text-align: center' />")
+        .append($("<td/>").text("開始"))
+        .append($("<td/>").text("チャネル"))
+        .append($("<td/>").text("タイトル"))
+        .append($("<td/>").text("サブタイトル")).appendTo(table);
 
-        $.each(data, function(k, v) {
-            $.each(v, function (kk, vv) {
-                if (vv["Title"] == undefined) {
-                    return
+    $.each(data, function(k, v) {
+        $.each(v, function (kk, vv) {
+            if (vv["Title"] == undefined) {
+                return
+            }
+            var matched = false;
+            for (var ki = 0; ki < keyword.length; ki++) {
+                if (vv["Title"].indexOf(keyword[ki]) != -1) {
+                    // match
+                    matched = true;
+                    break
                 }
-                var matched = false;
-                for (var ki = 0; ki < keyword.length; ki++) {
-                    if (vv["Title"].indexOf(keyword[ki]) != -1) {
-                        // match
-                        matched = true;
-                        break
-                    }
-                }
-                if (!matched) {
-                    return
-                }
+            }
+            if (!matched) {
+                return
+            }
 
-                var startdt = new Date(vv["StTime"] * 1000);
-                var enddt = new Date(vv["EdTime"] * 1000);
-                var nowdt = new Date();
-                var startstyle = "<td />";
-                var startmessage = "";
+            var startdt = new Date(vv["StTime"] * 1000);
+            var enddt = new Date(vv["EdTime"] * 1000);
+            var nowdt = new Date();
+            var startstyle = "<td />";
+            var startmessage = "";
 
-                if (vv["Warn"] == 1) {
-                    startstyle = "<td style='color: #CC6666'/>";
-                }
+            if (vv["Warn"] == 1) {
+                startstyle = "<td style='color: #CC6666'/>";
+            }
 
-                if (enddt - nowdt < 0) {
-                    return
-                } else if (startdt > nowdt && 
-                    startdt - nowdt.setMinutes(nowdt.getMinutes()-2) < 0) {
-                    startstyle = "<td style='color: #B294BB' />";
-                    startmessage = "SOON"
-                } else if (nowdt - startdt > 0) {
-                    startstyle = "<td style='color: #F0C674' />";
-                    startmessage = "ONAIR"
-                }
-                if (startmessage == "") {
-                    var start = zerofill(startdt.getMonth() + 1) + "/" +
-                        zerofill(startdt.getDate()) + " " +
-                        zerofill(startdt.getHours()) + ":" +
-                        zerofill(startdt.getMinutes());
+            if (enddt - nowdt < 0) {
+                return
+            } else if (startdt > nowdt && 
+                startdt - nowdt.setMinutes(nowdt.getMinutes()-2) < 0) {
+                startstyle = "<td style='color: #B294BB' />";
+                startmessage = "SOON"
+            } else if (nowdt - startdt > 0) {
+                startstyle = "<td style='color: #F0C674' />";
+                startmessage = "ONAIR"
+            }
+            if (startmessage == "") {
+                var start = zerofill(startdt.getMonth() + 1) + "/" +
+                    zerofill(startdt.getDate()) + " " +
+                    zerofill(startdt.getHours()) + ":" +
+                    zerofill(startdt.getMinutes());
+            } else {
+                var start = startmessage + " " +
+                    zerofill(startdt.getHours()) + ":" +
+                    zerofill(startdt.getMinutes());
+            }
+
+            var subtitle = "";
+            if (vv["Count"] == null) {
+                if (vv["SubTitle"] == null) {
+                    subtitle = "";
                 } else {
-                    var start = startmessage + " " +
-                        zerofill(startdt.getHours()) + ":" +
-                        zerofill(startdt.getMinutes());
+                    subtitle = vv["SubTitle"];
                 }
-
-                var subtitle = "";
-                if (vv["Count"] == null) {
-                    if (vv["SubTitle"] == null) {
-                        subtitle = "";
-                    } else {
-                        subtitle = vv["SubTitle"];
-                    }
+            } else {
+                if (vv["SubTitle"] == null) {
+                    subtitle = "#" + vv["Count"];
                 } else {
-                    if (vv["SubTitle"] == null) {
-                        subtitle = "#" + vv["Count"];
-                    } else {
-                        subtitle = "#" + vv["Count"] + " " + vv["SubTitle"];
-                    }
+                    subtitle = "#" + vv["Count"] + " " + vv["SubTitle"];
                 }
+            }
 
-                $('<tr/>')
-                    .append($(startstyle).text(start))
-                    .append($("<td />").text(vv["ChName"]))
-                    .append($("<td/>")
-                        .append("<a href='http://cal.syoboi.jp/tid/" + 
-                        vv["TID"] + "#" + vv["PID"] + "'" + 
-                        "style='color: #81A2BE'>" +
-                        slim(vv["Title"], 32) + "</a>"))
-                    .append($("<td />").text(subtitle))
-                    .appendTo(table);
-            });
+            $('<tr/>')
+                .append($(startstyle).text(start))
+                .append($("<td />").text(vv["ChName"]))
+                .append($("<td/>")
+                    .append("<a href='http://cal.syoboi.jp/tid/" + 
+                    vv["TID"] + "#" + vv["PID"] + "'" + 
+                    "style='color: #81A2BE'>" +
+                    slim(vv["Title"], 32) + "</a>"))
+                .append($("<td />").text(subtitle))
+                .appendTo(table);
         });
-        $(table).appendTo("#anime");
     });
+    $("#anime").empty();
+    $(table).appendTo("#anime");
 };
 
-$.get('https://noyuno.github.io/data/anime-keyword', function (keyword) {
-    print($.grep(keyword.split(/\n/), function (e) { return e !== ""; }));
+$.get('https://noyuno.github.io/data/anime-keyword', function (k) {
+    keyword = $.grep(k.split(/\n/), function (e) { return e !== ""; });
+    $.getJSON("https://noyuno.github.io/data/anime", function (d) {
+        data = d;
+        print();
+    });
 });
 
 function search() {
@@ -158,5 +157,8 @@ window.onload = function () {
     $("#search").focus();
 };
 
-window.setInterval(print, 1000 * 60);
+window.setInterval(function () {
+    print();
+    search();
+}, 1000 * 60);
 
