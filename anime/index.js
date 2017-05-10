@@ -54,17 +54,19 @@ var print = function () {
             var startdt = new Date(vv["StTime"] * 1000);
             var enddt = new Date(vv["EdTime"] * 1000);
             var nowdt = new Date();
+            var soondt = new Date(startdt.getTime());
+            soondt.setMinutes(soondt.getMinutes() - 2);
             var startstyle = "<td />";
             var startmessage = "";
 
             if (vv["Warn"] == 1) {
                 startstyle = "<td style='color: #CC6666'/>";
             }
-
+            
             if (enddt - nowdt < 0) {
                 return
             } else if (startdt > nowdt && 
-                startdt - nowdt.setMinutes(nowdt.getMinutes()-2) < 0) {
+                nowdt > soondt) {
                 startstyle = "<td style='color: #B294BB' />";
                 startmessage = "SOON"
             } else if (nowdt - startdt > 0) {

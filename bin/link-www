@@ -1,4 +1,6 @@
 #!/bin/bash -e
 
-sudo ln -s $HOME/noyuno.github.io /var/www/html/noyuno.github.io
+if [ ! -e /var/www/html/noyuno.github.io ]; then
+    sudo ln -s $HOME/noyuno.github.io /var/www/html/noyuno.github.io
+fi
 
