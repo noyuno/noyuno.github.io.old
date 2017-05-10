@@ -24,7 +24,7 @@ var go = function(i) {
 };
 
 var arrowkey = function(f, e) {
-    var linkar = [["anime"], ["dotfiles"], ["labo"], ["paint"], ["link"], 
+    var linkar = [["anime"], ["3d"], ["dotfiles"], ["labo"], ["paint"], ["link"], 
         ["github"], ["bitbucket", "i"], ["blog"]];
     shiftkey = e.shiftKey;
     switch (e.keyCode) {
