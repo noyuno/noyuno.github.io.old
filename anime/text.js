@@ -77,7 +77,7 @@ var print = function (keyword) {
                 }
 
                 $("#anime-banner").css("color", startstyle).text(
-                    start + " から " + vv["ChName"] + " で「" + 
+                    start + "から" + vv["ChName"] + "で「" + 
                     slim(vv["Title"], 32) + "」" + startmessage2);
                 return false;
             });

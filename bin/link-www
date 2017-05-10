@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+sudo ln -s $HOME/noyuno.github.io /var/www/html/noyuno.github.io
+

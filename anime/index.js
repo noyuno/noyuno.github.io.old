@@ -23,8 +23,14 @@ var slim = function (s, n) {
     return s.substr(0, i);
 };
 
+var keywordold = "";
 
 var print = function (keyword) {
+    if (keyword == undefined) {
+        keyword = keywordold;
+    } else {
+        keywordold = keyword;
+    }
     $.getJSON("https://noyuno.github.io/data/anime", function (data) {
         var table = $('<table id="anime-list" />');
         $("<tr style='font-weight: bold; text-align: center' />")
@@ -151,4 +157,6 @@ function search() {
 window.onload = function () {
     $("#search").focus();
 };
+
+window.setInterval(print, 1000 * 60);
 
