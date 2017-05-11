@@ -38,7 +38,7 @@ var arrowkey = function(f, e) {
         if (c == 's') {
             game.startgame();
         } else {
-            for (i in linkar) {
+            for (var i in linkar) {
                 if (linkar[i][linkar[i].length == 1 ? 0 : 1].charAt(0) == c) {
                     location.href = document.getElementById(linkar[i][0]).href;
                     break;
