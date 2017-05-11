@@ -25,6 +25,7 @@ var slim = function (s, n) {
 
 var keyword = [];
 var data;
+var notifyarray = [];
 
 var print = function () {
     var table = $('<table id="anime-list" />');
@@ -69,6 +70,13 @@ var print = function () {
                 nowdt > soondt) {
                 startstyle = "<td style='color: #B294BB' />";
                 startmessage = "SOON"
+                // notification
+                if (notifyarray.indexOf(vv["PID"]) == -1) {
+                    notifyarray.push(vv["PID"]);
+                    var n = new Notification(
+                        "まもなく" + vv["ChName"] + "で「" + vv["Title"] + "」が始まります");
+                    setTimeout(n.close.bind(n), 10 * 1000);
+                }
             } else if (nowdt - startdt > 0) {
                 startstyle = "<td style='color: #F0C674' />";
                 startmessage = "ONAIR"
@@ -155,7 +163,10 @@ function search() {
     }
 }
 
+var notify;
+
 window.onload = function () {
+    window.Notification.requestPermission();
     $("#search").focus();
 };
 
