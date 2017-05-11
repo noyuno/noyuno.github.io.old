@@ -1,27 +1,19 @@
-canvaswidth = 2000;
-canvasheight = 2000;
-gamestart = false;
-var start = function() {
-    gamestart = true;
-    score = 0;
-    collision = false;
-    array.splice(0, array.length);
-    myy = window.innerHeight * 4 / 5;
-    myx = window.innerWidth / 2;
-};
-myy = 0;
-myx = 0;
-myd = 10;
-mycol = 0;
-collision = false;
-score = 0;
-var array = [];
+"use strict";
 
+var game;
+var leftkey, rightkey, upkey, downkey, shiftkey;
 leftkey = rightkey = upkey = downkey = shiftkey = false;
 
-var go = function(i) {
-    location.href = document.getElementById(i).href;
-};
+var getDevice = (function(){
+    var ua = navigator.userAgent;
+    if(ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || ua.indexOf('Android') > 0 && ua.indexOf('Mobile') > 0){
+        return "mobile";
+    }else if(ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0){
+        return "mobile";
+    }else{
+        return "pc";
+    }
+})();
 
 var arrowkey = function(f, e) {
     var linkar = [["anime"], ["3d"], ["dotfiles"], ["labo"], ["paint"], ["link"], 
@@ -44,11 +36,11 @@ var arrowkey = function(f, e) {
     if (f == true) {
         var c = String.fromCharCode(e.keyCode).toLowerCase();
         if (c == 's') {
-            start();
+            game.startgame();
         } else {
             for (i in linkar) {
                 if (linkar[i][linkar[i].length == 1 ? 0 : 1].charAt(0) == c) {
-                    go(linkar[i][0]);
+                    location.href = document.getElementById(linkar[i][0]).href;
                     break;
                 } 
             }
@@ -64,22 +56,8 @@ document.onkeyup = function (e) {
     arrowkey(false, e);
 };
 
-window.onload = function () {
-    var cs  = document.getElementById('canvas');
-    cs.width = 2000;
-    cs.height = 2000;
-    var ctx = cs.getContext('2d');
-    ctx.strokeStyle = "lightgray";
-    ctx.fillStyle = "lightgray";
-    ctx.lineWidth = 10;
-    var w = cs.width;
-    var h = cs.height;
-    var x = 0;
-    var maxcircle = 120;
-    var mincircle = 6;
-    var count = 0;
-
-    function box(x, yv, ya, r) {
+class Box {
+    constructor (x, yv, ya, r, maxcircle) {
         this.x = x;
         this.yv = yv;
         this.ya = ya;
@@ -87,89 +65,158 @@ window.onload = function () {
         this.r = r;
         this.rm = false;
     }
-    box.prototype = {
-        next: function() {
-            this.yv += this.ya;
-            this.y += this.yv;
-        }
-    };
+    next() {
+        this.yv += this.ya;
+        this.y += this.yv;
+    }
+}
 
-    setInterval(function () {
-        ctx.clearRect(0, 0, w, h);
-        ctx.globalAlpha = 0.3;
-        ctx.strokeStyle = "lightgray";
-        ctx.fillStyle = "lightgray";
-        r = Math.random();
+class Game {
+
+    constructor() {
+        this.canvaswidth = 2000;
+        this.canvasheight = 2000;
+        this.gamestart = false;
+
+        this.myy = 0;
+        this.myx = 0;
+        this.myd = 10;
+        this.mycol = 0;
+        this.collision = false;
+        this.score = 0;
+        this.array = [];
+
+        this.cs  = document.getElementById('canvas');
+        this.cs.width = 2000;
+        this.cs.height = 2000;
+        this.ctx = this.cs.getContext('2d');
+        this.ctx.strokeStyle = "lightgray";
+        this.ctx.fillStyle = "lightgray";
+        this.ctx.lineWidth = 10;
+        this.w = this.cs.width;
+        this.h = this.cs.height;
+        this.x = 0;
+        this.maxcircle = 120;
+        this.mincircle = 6;
+        this.count = 0;
+        this.timer = null;
+    }
+
+    loop() {
+        this.ctx.clearRect(0, 0, this.w, this.h);
+        this.ctx.globalAlpha = 0.3;
+        this.ctx.strokeStyle = "lightgray";
+        this.ctx.fillStyle = "lightgray";
+        var r = Math.random();
         if (r<window.innerWidth/300000 || 
-            (gamestart && r<window.innerWidth/5000)) {
-            array.push(new box(
+            (this.gamestart && r < window.innerWidth/5000)) {
+            this.array.push(new Box(
                 Math.random()*window.innerWidth,
                 Math.random()*1,
                 Math.random()*0.1, 
-                Math.max(Math.random()*maxcircle, mincircle)));
-            if (gamestart && collision  == false)
-                document.getElementById("score").innerText = ++score;
+                Math.max(Math.random() * this.maxcircle, this.mincircle),
+                this.maxcircle));
+            if (this.gamestart && this.collision  == false)
+                document.getElementById("score").innerText = ++this.score;
         }
-        for(i = 0; i < array.length; i++) {
-            array[i].next();
-            if (array[i].y > window.innerHeight + maxcircle) {
-                array[i].rm = true;
+        for(var i = 0; i < this.array.length; i++) {
+            this.array[i].next();
+            if (this.array[i].y > window.innerHeight + this.maxcircle) {
+                this.array[i].rm = true;
                 continue;
             }
-            if (gamestart) {
-                dr = Math.sqrt(Math.pow(myx - array[i].x, 2) +
-                    Math.pow(myy - array[i].y, 2));
-                if (dr <= array[i].r + mycol) {
-                    collision = true;
+            if (this.gamestart) {
+                var dr = Math.sqrt(Math.pow(this.myx - this.array[i].x, 2) +
+                    Math.pow(this.myy - this.array[i].y, 2));
+                if (dr <= this.array[i].r + this.mycol) {
+                    this.collision = true;
                 }
             }
-            ctx.lineWidth = 1;//array[i].r*2;
-            ctx.globalAlpha = 
-                -(0.4-0.05)/(maxcircle-mincircle)*array[i].r+0.4+0.05;
-            ctx.beginPath();
-            ctx.arc(array[i].x, array[i].y, array[i].r, 0, Math.PI*2, true);
-            ctx.stroke();
-            ctx.fill();
+            this.ctx.lineWidth = 1;//this.array[i].r*2;
+            this.ctx.globalAlpha = 
+                -(0.4-0.05)/(this.maxcircle-this.mincircle)*this.array[i].r+0.4+0.05;
+            this.ctx.beginPath();
+            this.ctx.arc(this.array[i].x, this.array[i].y, this.array[i].r, 0, Math.PI*2, true);
+            this.ctx.stroke();
+            this.ctx.fill();
         }
 
-        for (i = 0; count % 100 == 0 && i < array.length; i++) {
-            if (array[i].rm == true) {
-                array.splice(i, 1);
+        for (var i = 0; this.count % 100 == 0 && i < this.array.length; i++) {
+            if (this.array[i].rm == true) {
+                this.array.splice(i, 1);
             }
         }
 
         // my
-        t = shiftkey ? myd / 3 : myd;
-        if (rightkey) myx = Math.min(window.innerWidth, myx + t);
-        if (leftkey)  myx = Math.max(0, myx - t);
-        if (upkey)    myy = Math.max(0, myy - t);
-        if (downkey)  myy = Math.min(window.innerHeight, myy + t);
+        var t = shiftkey ? this.myd / 3 : this.myd;
+        if (rightkey) this.myx = Math.min(window.innerWidth, this.myx + t);
+        if (leftkey)  this.myx = Math.max(0, this.myx - t);
+        if (upkey)    this.myy = Math.max(0, this.myy - t);
+        if (downkey)  this.myy = Math.min(window.innerHeight, this.myy + t);
         
-        if (collision) {
-            ctx.strokeStyle = "darkorange";
-            ctx.fillStyle = "darkorange";
+        if (this.collision) {
+            this.ctx.strokeStyle = "darkorange";
+            this.ctx.fillStyle = "darkorange";
         } else {
-            ctx.strokeStyle = "lightgray";
-            ctx.fillStyle = "lightgray";
+            this.ctx.strokeStyle = "lightgray";
+            this.ctx.fillStyle = "lightgray";
         }
-        if (gamestart) {
-            ctx.globalAlpha = 0.8;
-            ctx.beginPath();
-            ctx.moveTo(myx, myy - 10);
-            ctx.lineTo(myx - 10, myy + 10);
-            ctx.lineTo(myx + 10, myy + 10);
-            ctx.closePath();
-            ctx.fill();
+        if (this.gamestart) {
+            this.ctx.globalAlpha = 0.8;
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.myx, this.myy - 10);
+            this.ctx.lineTo(this.myx - 10, this.myy + 10);
+            this.ctx.lineTo(this.myx + 10, this.myy + 10);
+            this.ctx.closePath();
+            this.ctx.fill();
         }
-        count++;
-    }, 1000/30);
+        this.count++;
+    }
+
+    startanimation() {
+        var instance = this;
+        if (this.timer == null) {
+            this.timer = setInterval(function () {
+                instance.loop();
+            }, 1000/30);
+        }
+    }
+    
+    startgame() {
+        this.startanimation();
+        this.gamestart = true;
+        this.score = 0;
+        this.collision = false;
+        this.array.splice(0, this.array.length);
+        this.myy = window.innerHeight * 4 / 5;
+        this.myx = window.innerWidth / 2;
+    }
+
+    stop() {
+        clearInterval(this.timer);
+        this.timer = null;
+    }
+}
+
+window.onload = function () {
+    game = new Game();
+    if (getDevice == "pc") {
+        game.startanimation();
+    }
+    $("#start").click(function () {
+        game.startgame();
+    });
+    $("#stop").click(function () {
+        game.stop();
+    });
+    $("#secret").click(toggle);
 };
 
-// show hidden elements
-ishidden = true;
+// show hidden menu
+var ishidden = true;
 function toggle() {
-    e = document.getElementsByClassName("hidden")
-    c = ishidden ? "block" : "none";
+    var e = document.getElementsByClassName("hidden")
+    var c = ishidden ? "block" : "none";
     for (var i = 0; i < e.length; i++) {
         e[i].style.display = c;
     }
