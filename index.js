@@ -16,8 +16,6 @@ var getDevice = (function(){
 })();
 
 var arrowkey = function(f, e) {
-    var linkar = [["anime"], ["3d"], ["dotfiles"], ["labo"], ["paint"], ["link"], 
-        ["github"], ["bitbucket", "i"], ["blog"]];
     shiftkey = e.shiftKey;
     switch (e.keyCode) {
         case 39: // right
@@ -37,13 +35,6 @@ var arrowkey = function(f, e) {
         var c = String.fromCharCode(e.keyCode).toLowerCase();
         if (c == 's') {
             game.startgame();
-        } else {
-            for (i in linkar) {
-                if (linkar[i][linkar[i].length == 1 ? 0 : 1].charAt(0) == c) {
-                    location.href = document.getElementById(linkar[i][0]).href;
-                    break;
-                } 
-            }
         }
     }
 }
