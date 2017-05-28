@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+mkdir -p $HOME/noyuno.github.io/log
 log=$HOME/noyuno.github.io/log/$($HOME/dotfiles/bin/now)
 (
 set -x
@@ -16,7 +17,6 @@ curl -sL $src | jq . -M >$dest
 curl -sL $srcword >$destword
 git add $dest $destword
 git commit -m 'crontab: Update anime list'
-. ~/.keychain/`/bin/hostname`-sh
 git push
 ) 1>$log 2>&1
 
