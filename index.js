@@ -208,13 +208,13 @@ window.onload = function () {
 };
 
 // show hidden menu
-var ishidden = true;
+var isvisible = {};
 function toggle(cl) {
     var e = document.getElementsByClassName(cl)
-    var c = ishidden ? "block" : "none";
+    var c = isvisible[cl] ? "none" : "block";
     for (var i = 0; i < e.length; i++) {
         e[i].style.display = c;
     }
-    ishidden = !ishidden;
+    isvisible[cl] = !isvisible[cl];
 }
 
