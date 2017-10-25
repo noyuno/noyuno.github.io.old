@@ -19,15 +19,19 @@ var arrowkey = function(f, e) {
     shiftkey = e.shiftKey;
     switch (e.keyCode) {
         case 39: // right
+        case 68: // d
             rightkey = f;
             return;
         case 37: // left
+        case 65: // a
             leftkey = f;
             return;
-        case 38: //up
+        case 38: // up
+        case 87: // w
             upkey = f;
             return;
-        case 40: //down
+        case 40: // down
+        case 83: // s
             downkey = f;
             return;
     }
@@ -205,8 +209,8 @@ window.onload = function () {
 
 // show hidden menu
 var ishidden = true;
-function toggle() {
-    var e = document.getElementsByClassName("hidden")
+function toggle(cl) {
+    var e = document.getElementsByClassName(cl)
     var c = ishidden ? "block" : "none";
     for (var i = 0; i < e.length; i++) {
         e[i].style.display = c;

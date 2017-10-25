@@ -74,5 +74,10 @@ hr:after {
 
 .hidden {
     display: none;
+    margin-left: 1em;
+}
+
+.button {
+    cursor:pointer;
 }
 
