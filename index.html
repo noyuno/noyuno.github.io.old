@@ -86,6 +86,20 @@
             cursor:pointer;
         }
     </style>
+    <script>
+        var cb = function() {
+            var o = function (u) {
+                var l = document.createElement('link'); l.rel = 'stylesheet';
+                l.href = u;
+                var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+            };
+            o("https://fonts.googleapis.com/css?family=Inconsolata");
+        };
+        var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+            webkitRequestAnimationFrame || msRequestAnimationFrame;
+        if (raf) raf(cb);
+        else window.addEventListener('load', cb);
+    </script>
     <script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script async src="./index.js"></script>
     <script async src="./anime/text.js" charset="utf-8"></script>
