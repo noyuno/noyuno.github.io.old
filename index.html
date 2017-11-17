@@ -3,11 +3,24 @@
     <title>noyuno.github.io</title>
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Inconsolata" />
-    <link rel = "stylesheet" type = "text/css" href = "index.css">
     <style>
         #anime-banner { font-size: 17px; }
     </style>
+    <script>
+        var cb = function() {
+            var o = function (u) {
+                var l = document.createElement('link'); l.rel = 'stylesheet';
+                l.href = u;
+                var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+            };
+            o("https://fonts.googleapis.com/css?family=Inconsolata");
+            o("index.css");
+        };
+        var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+            webkitRequestAnimationFrame || msRequestAnimationFrame;
+        if (raf) raf(cb);
+        else window.addEventListener('load', cb);
+    </script>
     <script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script async src="./index.js"></script>
     <script async src="./anime/text.js" charset="utf-8"></script>
