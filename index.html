@@ -5,22 +5,87 @@
     <meta name="viewport" content="width=device-width">
     <style>
         #anime-banner { font-size: 17px; }
+
+        h1 {
+            font-weight: bold 
+        }
+        * {
+            font-family:"Inconsolata", monospace;
+            font-size:20px;
+            color: lightgray;
+            line-height: 1.2em
+        }
+        *:lang(ja) {
+            font-family: "Noto Sans CJK JP DemiLight", "Noto Sans CJK JP Regular", monospace;
+        }
+        body, input {
+            background-color: #222
+        }
+        #content {
+            position: absolute;
+            margin: 30px;
+            top: 0;
+            left: 0
+        }
+
+        .section {
+            margin: 1em 0em 1em 0em;
+            width: 250px;
+        }
+
+        .hidden {
+            display: none;
+            margin-left: 1em;
+        }
+
+        a {
+            text-decoration: none 
+        }
+        a:link, a:visited {
+            color:lightgray 
+        }
+
+        a:active, a:hover, a:focus {
+            color: white 
+        }
+
+        hr {
+            height: 0;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            border-top: 1px dashed #bbb;
+
+        }
+
+        hr:after {
+            content: '✂';
+            display: inline-block;
+            position: relative;
+            top: -12px;
+            left: 40px;
+            padding: 0 3px;
+            font-size: 18px;
+        }
+
+        .wrapper {
+            position: fixed;
+            top:0;
+            left:0;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        #canvas {
+            width: 2000px;
+            height: 2000px 
+        }
+
+        .button {
+            cursor:pointer;
+        }
     </style>
-    <script>
-        var cb = function() {
-            var o = function (u) {
-                var l = document.createElement('link'); l.rel = 'stylesheet';
-                l.href = u;
-                var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
-            };
-            o("https://fonts.googleapis.com/css?family=Inconsolata");
-            o("index.css");
-        };
-        var raf = requestAnimationFrame || mozRequestAnimationFrame ||
-            webkitRequestAnimationFrame || msRequestAnimationFrame;
-        if (raf) raf(cb);
-        else window.addEventListener('load', cb);
-    </script>
     <script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script async src="./index.js"></script>
     <script async src="./anime/text.js" charset="utf-8"></script>

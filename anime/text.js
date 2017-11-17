@@ -87,11 +87,13 @@ var print = function () {
     });
 };
 
-$.get('https://noyuno.github.io/data/anime-keyword', function (k) {
-    keyword = $.grep(k.split(/\n/), function (e) { return e !== ""; });
-    $.getJSON("https://noyuno.github.io/data/anime", function (d) {
-        data = d;
-        print();
+window.onload = function () {
+    $.get('https://noyuno.github.io/data/anime-keyword', function (k) {
+        keyword = $.grep(k.split(/\n/), function (e) { return e !== ""; });
+        $.getJSON("https://noyuno.github.io/data/anime", function (d) {
+            data = d;
+            print();
+        });
     });
-});
+};
 
